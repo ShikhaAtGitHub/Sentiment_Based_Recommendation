@@ -41,18 +41,19 @@ def predict():
     '''
     For rendering results on HTML GUI
     '''
-    username = str(request.form.get('reviews_username'))
-    print(username)
-    prediction = recommend(username)
-    print("Output :", prediction)
-    return render_template('index.html', prediction_text='Your Top 5 Recommendations are:\n {}'.format(prediction))
+    if request.method == 'POST':
+        username = str(request.form.get('reviews_username'))
+        print(username)
+        prediction = recommend(username)
+        print("Output :", prediction)
+        return render_template('index.html', prediction_text='Your Top 5 Recommendations are:\n {}'.format(prediction))
+    else:
+        return render_template('index.html')
     #return prediction[0]
 
 
 if __name__ == "__main__":
     print("Start Server...")
-    # Call function that loads Model
-    print("Model loaded...")
     # Run Server
     app.run(host="0.0.0.0", port=5000)
     app.run(debug = True)
