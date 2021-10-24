@@ -26,10 +26,13 @@
         border-radius: 5px;
         cursor: pointer;
     }
+    .products {
+        color: chocolate;
+    }
 </style>
 <body>
   <div class="login">
-    <h1 class="heading">Recommendation of the Product</h1>
+    <h1 class="heading">Recommendation of Products</h1>
     <form action="{{ url_for('predict')}}" method="post">
       <input  class="input-user" type="text" name="reviews_username" placeholder="Enter Your Username" required="required" /><br><br>
       <button class="predict-btn" type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
@@ -37,20 +40,10 @@
 
     <br>
     <br>
-    {{ prediction_text }}
-    <div id="product-container"></div>
+    <h3>Top 5 Recommendations are:</h3>
+    {% for val in data %}
+        <h4 class="products">{{val}}</h4>
+    {% endfor %}
   </div>
-  <script>
-    var products = '{{ prediction_text }}'
-    var str = '<ul>'
-
-    products.forEach(function(prod) {
-    str += '<li>'+ prod + '</li>';
-    }); 
-
-    str += '</ul>';
-    document.getElementById("product-container").innerHTML = str;
-  </script>
 </body>
-
 </html>
