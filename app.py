@@ -12,18 +12,16 @@ logit = pickle.load(
     open('models/logit_model.pkl', 'rb'))
 
 def recommend(user_input):
-    print('guhkjvtdzsddddsssss',user_final_rating)
     d = user_final_rating.loc[user_input].sort_values(ascending=False)[0:20]
-    print('guhkjvtdzsddddsssss',d)
     i= 0
     a = {}
     for prod_name in d.index.tolist():
-      product_name = prod_name
-      product_name_review_list =df[df['prod_name']== product_name]['Review'].tolist()
-      features= word_vectorizer.transform(product_name_review_list)
-      logit.predict(features)
-      a[product_name] = logit.predict(features).mean()*100
-      
+        product_name = prod_name
+        product_name_review_list =df[df['prod_name']== product_name]['Review'].tolist()
+        features= word_vectorizer.transform(product_name_review_list)
+        logit.predict(features)
+        a[product_name] = logit.predict(features).mean()*100
+    
     b= pd.Series(a).sort_values(ascending = False).head(5).index.tolist()
     return b
 
@@ -35,15 +33,14 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    '''
-    For rendering results on HTML GUI
-    '''
     if request.method == 'POST':
         username = str(request.form.get('reviews_username'))
-        print(username)
-        prediction = recommend(username)
-        print("Output :", prediction)
-        return render_template('index.html', data=prediction)
+        if (user_final_rating.index == username).any():
+            prediction = recommend(username)
+            print("Output :", prediction)
+            return render_template('index.html', data=prediction)
+        else:
+            return render_template('index.html', data2='Please enter valid user')
     else:
         return render_template('index.html')
 
