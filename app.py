@@ -10,7 +10,7 @@ word_vectorizer = pickle.load(
     open('models/word_vectorizer.pkl', 'rb'))
 logit = pickle.load(
     open('models/logit_model.pkl', 'rb'))
-
+# Few valid users: samantha, joshua, rebecca, 02dakota, 
 def recommend(user_input):
     d = user_final_rating.loc[user_input].sort_values(ascending=False)[0:20]
     i= 0
